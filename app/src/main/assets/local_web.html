@@ -1,0 +1,39 @@
+<html>
+<script type="text/javascript">
+function onNumberClicked(msg) {
+    document.getElementById("text2").value = Android.writeNumber(msg);
+}
+function onSubmitClicked() {
+    var num = document.getElementById("text2").value;
+    var msg = document.getElementById("msg").value;
+    Android.submit(num, msg);
+}
+</script>
+<head>
+    <link rel="stylesheet" type="text/css" href="local_web.css"/>
+</head>
+<body>
+<div id="calculator">
+    <div class="keys">
+        <button onClick="onNumberClicked('1')">1</button>
+        <button onclick="onNumberClicked('2')">2</button>
+        <button onclick="onNumberClicked('3')">3</button>
+        <button onclick="onNumberClicked('4')">4</button>
+        <button onclick="onNumberClicked('5')">5</button>
+        <button onclick="onNumberClicked('6')">6</button>
+        <button onclick="onNumberClicked('7')">7</button>
+        <button onclick="onNumberClicked('8')">8</button>
+        <button onclick="onNumberClicked('9')">9</button>
+        <button onclick="onNumberClicked('*')">*</button>
+        <button onclick="onNumberClicked('0')">0</button>
+        <button onclick="onNumberClicked('#')">#</button>
+    </div>
+    <input class="text" type="text" value="Mobile Number"><input id="text2" type="text" value="">
+    <textarea id="msg" placeholder="Message" rows="5" cols="25" name="contents" value=""></textarea>
+
+    <div class="keys">
+        <button onclick="onSubmitClicked()">Submit</button>
+    </div>
+</div>
+</body>
+</html>
