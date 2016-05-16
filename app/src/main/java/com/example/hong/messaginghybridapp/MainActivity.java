@@ -15,7 +15,11 @@
 * - Android concatenate number and return to javascript function
 * - Using addJavascriptInterface that allow the Android app and the HTML page to ‘talk’ to each other
 * - If submit button clicked, check phone number and massage (length > 0)
-* - Then send mobile massage using sms manager
+* - Then send mobile massage using sms manager and initialize phone number and message text
+*
+* Exception
+* - Check Phone number or Message empty
+* - Check Phone number is Numeric
 *
 * */
 
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 	WebView browser;
 	Context mContext;
 
-	String smsNum = "", smsText = "";
+	String smsNum = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,16 +76,38 @@ public class MainActivity extends AppCompatActivity {
 			return smsNum;
 		}
 		@JavascriptInterface
-		public void submit(String a, String b) { // HTML's submit button clicked
-			Toast.makeText(getApplicationContext(), "submit", Toast.LENGTH_SHORT).show();
-			if (a.length()>0 && b.length()>0){ // If phone number and message exist
-				smsNum = a; smsText = b;
-				sendSMS(smsNum, smsText); // Send SMS to phone number
+		public void submit(String phone, String msg) { // HTML's submit button clicked
+
+			if (checkException(phone, msg)){ // If phone number and message exist
+				smsNum = "";
+				Toast.makeText(getApplicationContext(), "submit", Toast.LENGTH_SHORT).show();
+				sendSMS(phone, msg); // Send SMS to phone number
 			} else {
-				Toast.makeText(getApplicationContext(), "모두 입력해 주세요", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "Empty!!", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
+
+	// exception handling
+	public boolean checkException(String phone, String msg) {
+		if (phone.isEmpty() || msg.isEmpty() || !isNumeric(phone)) { // empty or isn't numeric
+			Toast.makeText(getApplicationContext(), "Exception : " + "Enter number", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		return true;
+	}
+
+	// Whether phone number is number or not
+	public boolean isNumeric(String str) {
+		try {
+			double d = Double.parseDouble(str);
+		}
+		catch(NumberFormatException nfe) {
+			return false;
+		}
+		return true;
+	}
+
 
 	// Send smsText(message) to smsNumber(phone number)
 	public void sendSMS(String smsNumber, String smsText) {
@@ -98,19 +124,19 @@ public class MainActivity extends AppCompatActivity {
 				switch(getResultCode()){
 					case Activity.RESULT_OK:
 						// sms send
-						Toast.makeText(mContext, "전송 완료", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext, "Submit ok", Toast.LENGTH_SHORT).show();
 						break;
 					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
 						// sms send fail
-						Toast.makeText(mContext, "전송 실패", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext, "Submit fail", Toast.LENGTH_SHORT).show();
 						break;
 					case SmsManager.RESULT_ERROR_NO_SERVICE:
 						// no service
-						Toast.makeText(mContext, "서비스 지역이 아닙니다", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext, "No service locaton", Toast.LENGTH_SHORT).show();
 						break;
 					case SmsManager.RESULT_ERROR_RADIO_OFF:
 						// radio off
-						Toast.makeText(mContext, "무선(Radio)가 꺼져있습니다", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext, "Radio is off", Toast.LENGTH_SHORT).show();
 						break;
 					case SmsManager.RESULT_ERROR_NULL_PDU:
 						// PDU fail
@@ -126,11 +152,11 @@ public class MainActivity extends AppCompatActivity {
 				switch (getResultCode()){
 					case Activity.RESULT_OK:
 						// arrive
-						Toast.makeText(mContext, "SMS 도착 완료", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext, "SMS Submit ok", Toast.LENGTH_SHORT).show();
 						break;
 					case Activity.RESULT_CANCELED:
 						// not arrive
-						Toast.makeText(mContext, "SMS 도착 실패", Toast.LENGTH_SHORT).show();
+						Toast.makeText(mContext, "SMS Submit fail", Toast.LENGTH_SHORT).show();
 						break;
 				}
 			}
