@@ -19,7 +19,7 @@
 *
 * Exception
 * - Check Phone number or Message empty
-* - Check Phone number is Numeric
+* - Check Phone number is Numeric and more than 20
 *
 * */
 
@@ -88,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-	// exception handling
+	// exception handling, empty or not number or more than 20
 	public boolean checkException(String phone, String msg) {
-		if (phone.isEmpty() || msg.isEmpty() || !isNumeric(phone)) { // empty or isn't numeric
+		if (phone.isEmpty() || msg.isEmpty() || !isNumeric(phone) || phone.length() > 20) { // empty or isn't numeric
 			Toast.makeText(getApplicationContext(), "Exception : " + "Enter number", Toast.LENGTH_SHORT).show();
 			return false;
 		}

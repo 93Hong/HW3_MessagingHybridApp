@@ -1,8 +1,11 @@
 <html>
 <script type="text/javascript">
+// if number button clicked, call java method 'writeNumber()' using 'Android' and update phone number text
 function onNumberClicked(msg) {
     document.getElementById("text2").value = Android.writeNumber(msg);
 }
+// if submit button clicked, call java method 'submit' using 'Android' and initialize text field
+// send sms message
 function onSubmitClicked() {
     var num = document.getElementById("text2").value;
     document.getElementById("text2").value = "";
@@ -26,9 +29,9 @@ function onSubmitClicked() {
         <button onclick="onNumberClicked('7')">7</button>
         <button onclick="onNumberClicked('8')">8</button>
         <button onclick="onNumberClicked('9')">9</button>
-        <button>*</button>
+        <button onclick="onNumberClicked('*')">*</button>
         <button onclick="onNumberClicked('0')">0</button>
-        <button>#</button>
+        <button onclick="onNumberClicked('#')">#</button>
     </div>
     <input class="text" type="text" value="Mobile Number"><input id="text2" onfocus='blur()' type="text" value="">
     <textarea id="msg" placeholder="Message" rows="5" cols="25" name="contents" value=""></textarea>
